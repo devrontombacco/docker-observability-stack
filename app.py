@@ -1,18 +1,48 @@
-from flask import Flask
+from flask import Flask, jsonify, request
+from flask_sqlalchemy import SQLAlchemy
 
-app = Flask(__name__) 
+app = Flask(__name__)
 
-@app.route('/')
-def hello_world():
-    return 'Welcome to the Ticketing System API'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://admin:password@localhost:5432/tickets'
+
+db = SQLAlchemy(app)
+
+class Ticket(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(500))
+    priority = db.Column(db.String(20))
+    status = db.Column(db.String(20), default='open')
+    language = db.Column(db.String(10))
+
+with app.app_context():
+    db.create_all()
 
 @app.route('/tickets', methods=['GET'])
 def returnAllTickets():
-    return 'Here are all tickets'
+    tickets = Ticket.query.all()
+    return jsonify([{
+        'id': t.id,
+        'title': t.title,
+        'description': t.description,
+        'priority': t.priority,
+        'status': t.status,
+        'language': t.language
+    } for t in tickets])
 
 @app.route('/tickets', methods=['POST'])
 def createTicket():
-    return 'Ticket created successfully'
+    data = request.get_json()
+    ticket = Ticket(
+        title=data['title'],
+        description=data.get('description'),
+        priority=data.get('priority'),
+        status=data.get('status', 'open'),
+        language=data.get('language')
+    )
+    db.session.add(ticket)
+    db.session.commit()
+    return jsonify({'message': 'Ticket created'}), 201
 
 if __name__ == '__main__':
     app.run(debug=True)
