@@ -1,6 +1,8 @@
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 import os
+import time 
+import sqlalchemy
 
 app = Flask(__name__)
 
@@ -16,8 +18,21 @@ class Ticket(db.Model):
     status = db.Column(db.String(20), default='open')
     language = db.Column(db.String(10))
 
-with app.app_context():
-    db.create_all()
+def connect_with_retry():
+    retries = 10
+    while retries > 0:
+        try:
+            with app.app_context():
+                db.create_all()
+            print("Database connected successfully")
+            return
+        except sqlalchemy.exc.OperationalError:
+            retries -= 1
+            print(f"Database not ready, retrying... ({retries} attempts left)")
+            time.sleep(3)
+    raise Exception("Could not connect to database after multiple retries")
+
+connect_with_retry()
 
 @app.route('/tickets', methods=['GET'])
 def returnAllTickets():
