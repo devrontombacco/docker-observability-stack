@@ -34,6 +34,8 @@ def connect_with_retry():
 connect_with_retry()
 
 REQUEST_COUNT = Counter('http_requests_total', 'Total HTTP Requests')
+TICKETS_CREATED = Counter('tickets_created_total', 'Total Tickets Created')
+
 
 @app.route('/metrics')
 def metrics():
@@ -64,6 +66,7 @@ def createTicket():
     )
     db.session.add(ticket)
     db.session.commit()
+    TICKETS_CREATED.inc()
     return jsonify({'message': 'Ticket created'}), 201
 
 if __name__ == '__main__':
