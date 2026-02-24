@@ -1,13 +1,12 @@
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
+from prometheus_client import Counter, generate_latest
 import os
 import time 
 import sqlalchemy
 
 app = Flask(__name__)
-
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
-
 db = SQLAlchemy(app)
 
 class Ticket(db.Model):
@@ -33,6 +32,13 @@ def connect_with_retry():
     raise Exception("Could not connect to database after multiple retries")
 
 connect_with_retry()
+
+REQUEST_COUNT = Counter('http_requests_total', 'Total HTTP Requests')
+
+@app.route('/metrics')
+def metrics():
+    REQUEST_COUNT.inc()
+    return generate_latest(), 200, {'Content-Type': 'text/plain; charset=utf-8'}
 
 @app.route('/tickets', methods=['GET'])
 def returnAllTickets():
