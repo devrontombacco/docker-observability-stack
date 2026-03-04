@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   app:
     build: .
@@ -22,23 +24,23 @@ services:
       - tickets-network
 
   prometheus:
-      image: prom/prometheus
-      ports:
-        - "9090:9090"
-      volumes:
-        - ./prometheus.yml:/etc/prometheus/prometheus.yml
-        - ./alert_rules.yml:/etc/prometheus/alert_rules.yml
-      networks:
-        - tickets-network
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./alert_rules.yml:/etc/prometheus/alert_rules.yml
+    networks:
+      - tickets-network
 
-      alertmanager:
-        image: prom/alertmanager
-        ports:
-          - "9093:9093"
-        volumes:
-          - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml
-        networks:
-          - tickets-network
+  alertmanager:
+    image: prom/alertmanager
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    networks:
+      - tickets-network
 
   grafana:
     image: grafana/grafana
@@ -46,7 +48,7 @@ services:
       - "3000:3000"
     networks:
       - tickets-network
-  
+
   locust:
     image: locustio/locust
     ports:
