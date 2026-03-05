@@ -89,7 +89,11 @@ The alert will also appear in Alert Manager like so
 
 ## Cleanup
 
-` docker-compose down`
+Stop and remove containers
+`docker-compose down`
+
+Stop and remove containers AND volumes (deletes database data)
+`docker-compose down -v`
 
 ## License
 
