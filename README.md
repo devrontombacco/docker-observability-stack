@@ -1,4 +1,4 @@
-# Docker Observability Stack project
+# Docker Observability Stack
 
 A containerised support ticket API with a full observability stack — monitoring, alerting, and load testing. Built to demonstrate Docker networking, volumes, and multi-container orchestration with Docker Compose.
 
