@@ -99,6 +99,6 @@ This project is open source and available under the MIT License.
 
 Devron:
 
-- LinkedIn: linkedin.com/in/devrontombacco
-- Github: github.com/devrontombacco
-- website: dtcloudnetworking.com
+- LinkedIn: [linkedin.com/in/devrontombacco](https://www.linkedin.com/in/devrontombacco/)
+- Github: [github.com/devrontombacco](https://github.com/devrontombacco)
+- Website: [dtcloudnetworking.com](https://dtcloudnetworking.com)
