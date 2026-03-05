@@ -86,3 +86,19 @@ And finally to a firing alert
 
 The alert will also appear in Alert Manager like so
 ![Screenshot](/screenshots/alert_manager.png)
+
+## Cleanup
+
+` docker-compose down`
+
+## License
+
+This project is open source and available under the MIT License.
+
+## Author
+
+Devron:
+
+- LinkedIn: linkedin.com/in/devrontombacco
+- Github: github.com/devrontombacco
+- website: dtcloudnetworking.com
